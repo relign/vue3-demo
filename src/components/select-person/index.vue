@@ -9,6 +9,7 @@
             @input="onChange"
             @keydown="onKeyDown"
             @keyup="onKeyUp"
+            @blur="onBlur"
         />
         <div v-if="showContent" class="el-textarea__inner select-person_content">
             {{inputVal.slice(0, lastIndex)}}<el-popover
@@ -24,9 +25,9 @@
                     <span>@</span>
                 </template>
                 <template v-slot>
-                    <ul class="el-dropdown-menu">
+                    <ul v-if="userList.length > 0" class="el-dropdown-menu">
                         <li
-                            v-for="item in list"
+                            v-for="item in userList"
                             class="el-dropdown-menu__item"
                             :key="item.id"
                             @click="selectUser(item)"
@@ -35,6 +36,9 @@
                             <span>{{item.name}}</span>
                         </li>  
                     </ul>
+                    <div class="empty-data" v-else>
+                        无更多数据
+                    </div>
                 </template>
             </el-popover>{{inputVal.slice(lastIndex + 1)}}
         </div>
@@ -47,6 +51,7 @@ export default {
     },
     data() {
         return {
+            userList: [],
             showContent: false,
             inputVal: '',
             lastIndex: -1,
@@ -55,6 +60,9 @@ export default {
     },
     setup() {
         
+    },
+    beforeMount () {
+        this.userList = this.list;
     },
     updated () {
         this.$nextTick(() => {
@@ -85,6 +93,11 @@ export default {
                 this.showContent = false;
             }
         },
+        // onBlur () {
+        //     setTimeout(() => {
+        //         this.showContent = false;
+        //     }, 0)
+        // },
         onKeyUp (event) {
             const { key } = event;
             const { selectionStart, value } = event.target;
@@ -92,8 +105,10 @@ export default {
             const lastIndex = newVal.lastIndexOf('@');
                
             if (lastIndex !== -1) {
-                const lastChar = newVal[newVal.length -1];
+                const lastChar = newVal.slice(lastIndex + 1);
+                this.userList = this.list.filter(item => item.name.indexOf(lastChar) > -1);
                 if (lastChar.indexOf(' ') === -1) {
+
                     if (key === '@') {
                         this.lastIndex = lastIndex;
                         this.showContent = true;
@@ -133,6 +148,7 @@ textarea {
     overflow-wrap: break-word;
     letter-spacing: normal;
     word-spacing: normal;
+    overflow: hidden;
 }
 /** 更改 element 组件样式 */
 .el-popover {
@@ -153,6 +169,11 @@ textarea {
 
 .avatar {
     margin-right: 10px;
+}
+
+.empty-data {
+    padding: 10px;
+    text-align: center;
 }
 
 </style>
