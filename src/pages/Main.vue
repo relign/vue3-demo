@@ -1,14 +1,10 @@
 <template>
     <div>
-        <div class="el-textarea">
-            <textarea
-                class="el-textarea__inner"
-                placeholder="请输入内容"
-                @input="inputChange"
-            />
-        </div>
-
-        <select-person />
+        <select-person
+            class="el-textarea"
+            :list="list"
+        >
+        </select-person>
         <tag-select
             :default-value='defaultValue'
             @changeSelectTab='changeSelectTab'
@@ -18,13 +14,50 @@
 </template>
 <script>
 import TagSelect from '../components/TagSelect.vue'
-import SelectPerson from '../components/SelectPerson.vue'
+import SelectPerson from '../components/select-person/index.vue'
 
 export default {
     data() {
         return {
             defaultValue: [3, 5, 10],
-            textarea: ''
+            textarea: '',
+            list: [
+                {
+                    id: 7,
+                    name: 'abc',
+                    img: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+                },
+                {
+                    id: 1,
+                    name: '张三d',
+                    img: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+                },
+                {
+                    id: 2,
+                    name: '李四a',
+                    img: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+                },
+                {
+                    id: 5,
+                    name: '赵武c',
+                    img: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+                },
+                {
+                    id: 11,
+                    name: '噜噜修',
+                    img: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+                },
+                {
+                    id: 12,
+                    name: '圣罗兰',
+                    img: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+                },
+                {
+                    id: 18,
+                    name: '12啥',
+                    img: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+                }
+            ]
         }
     },
     components: {
